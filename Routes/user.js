@@ -44,6 +44,14 @@ router.post('/health/Symptoms',HealthController.Symtomps);
 //health
 router.get('/user/covid-checkup',HealthController.health);
 
+router.post('/health/triage',HealthController.Triage);
+router.post('/health/recomend',HealthController.recomend);
+router.post('/health/condition',HealthController.Condition);
+
+
+
+
+
 
 module.exports = router;
 

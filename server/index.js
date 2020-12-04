@@ -18,9 +18,11 @@ app.use(express.json());
 
 const Posts = require('../Routes/Posts');
 const user = require('../Routes/user');
+const resource = require('../Routes/resource');
 
 app.use('/posts',Posts);
 app.use('/',user);
+app.use('/resource',resource);
 
 
 app.listen(Port, ()=> {console.log(`server started on port ${Port}`)})

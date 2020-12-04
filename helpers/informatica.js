@@ -9,6 +9,14 @@ const headers = {
       'json': true
     };
   
+    const headers2 = {
+       
+      'content-type': 'application/json',
+      'App-Id': process.env.infermedica_App_Id2,
+      'App-Key': process.env.infermedica_App_Key2,
+      'json': true
+    };
+  
 
  const  parse = async (data) =>{
     return  response = await got.post(`${process.env.infermedica_API}/parse`,{
@@ -38,20 +46,27 @@ const headers = {
     console.log("body",body);
      return body;
   }
- const suggest= (data) =>{
-    return axios({
-      method: 'post',
-      url: `${process.env.infermedica_API}/suggest`,
-      headers: headers,
-      data
-    });
+ const Recomend= async(data) =>{
+  const  {body} = await got.post(`${process.env.infermedica_API}/recommend_specialist`,{
+    json:data,
+    responseType: "json",
+    headers: headers2
+  }
+  
+
+
+  
+);
+console.log(body);
+return body;
+ 
   }
  const diagnosis = async (data) =>{
      console.log(process.env.infermedica_API);
     const  {body} = await got.post(`${process.env.infermedica_API}/diagnosis`,{
         json:data,
         responseType: "json",
-        headers: headers
+        headers: headers2
       }
       
     
@@ -62,21 +77,23 @@ const headers = {
     return body;
    
   }
- const explain = (data) =>{
-    return axios({
-      method: 'post',
-      url: `${process.env.infermedica_API}/explain`,
-      headers: headers,
-      data
-    });
+ const condition = async (data) =>{
+ 
+    const {body} = await  got(`https://api.infermedica.com/v2/conditions/${data.condition}`,{headers : headers2});
+   
+    
+     return body;
   }
-  const triage = (data) =>{
-    return axios({
-      method: 'post',
-      url: `${process.env.infermedica_API}/triage`,
-      headers: headers,
-      data
-    });
+  const triage =  async(data) =>{
+    const  {body} = await got.post(`${process.env.infermedica_API}/triage`,{
+      json:data,
+      responseType: "json",
+      headers: headers2
+    }
+  );
+
+  return body;
+    
   }
   const test =  async() =>{
     const {body} = await got('https://sindresorhus.com');
@@ -121,5 +138,5 @@ const headers = {
 //   }
 
   module.exports = {
-    triage ,headers, parse ,loadRiskFactors,  explain ,  diagnosis ,suggest, test, Symptoms
+    triage ,headers, parse ,loadRiskFactors,  condition ,  diagnosis , test, Symptoms , Recomend
 }
