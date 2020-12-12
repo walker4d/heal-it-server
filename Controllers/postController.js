@@ -4,12 +4,7 @@ const Post = require('../models/post');
 
 //post controller
 const post_index =  (req,res,next) => {
-    // // auth(req,res,next);    
-    // Post.find({company_id: req.params.company_id}, function (err, applic) {
-    //     if (err) return res.status(500).send("There was a problem getting applications.");
-    //     if (!applic) return res.status(404).send("No applications found.");
-    //     res.status(200).send(applic);
-    // }).populate('job').populate('user');
+   
 
     Post.find( {}, function (err, Posts) {
         if (err) return res.status(500).send({message: 'There was a problem getting jobs'});
