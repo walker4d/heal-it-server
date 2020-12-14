@@ -12,6 +12,7 @@ router.get('/:id',postController.userPosts);
 router.post('/create',postController.create);
 router.post('/comment/:id',commentController.post_comment);
 router.get('/comment/:id',commentController.get_comment);
+router.put('/like/:id',commentController.like_Post);
 
 
 

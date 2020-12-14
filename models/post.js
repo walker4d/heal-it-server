@@ -13,6 +13,7 @@ const PostSchema = new Schema(
     Author:String,
     likes:String,
     dislikes:String,
+    Likes:Array,
     comments_amount:String,
  
        

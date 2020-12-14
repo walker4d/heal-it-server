@@ -29,7 +29,7 @@ const user = {
     password: hashpassword,
     email: req.body.email,
     gender:req.body.gender,
-    age:req.body.age
+    age:0
     
 
 }
@@ -53,11 +53,11 @@ const emailData = {
 
 try{
     Account_activation_email(emailData);
-    res.status(200).send({message:'email has been sent. please verify your account' });
+    res.status(200).send('email has been sent. please verify your account' );
 }catch(err){
 
     console.log(err)
-    res.status(400).send(err);
+    res.status(400).send('an error occured');
 
 }
     
@@ -77,7 +77,7 @@ const activate_account = async (req,res) => {
 
      
                 if(err){
-                    console.log('activation error');
+       
                     return res.status(400).send('Link Expired. sign up again');
                 }else{
                     const {user} = JWT.decode(token);
@@ -94,7 +94,7 @@ const activate_account = async (req,res) => {
                         
                         profileUrl:'',
                         gender:user.gender,
-                        age:user.age,
+                        age:0,
                         resetPasswordLink:''
 
                         
@@ -103,7 +103,7 @@ const activate_account = async (req,res) => {
                     });
                        const saveuser = await userr.save();
                     res.header('auth-token',token);
-                    res.status(200).send({ message:'your account has been activated', user: saveuser});
+                    res.status(200).send({ message:'your account has been activated'});
                    
 
 
@@ -245,7 +245,7 @@ if(resetPasswordLink){
         if(err) { console.log(err); return res.status(400).send({error: "Expired Link, try again"})};
 
         const {_id} = JWT.decode(resetPasswordLink);
-        console.log('user id: ', _id);
+       
 
 
     //hashpassword
@@ -259,7 +259,7 @@ if(err){
     return res.status(400).send({error:"error resetting passeord"});
 }
 
-console.log("updated user",result);
+
 res.status(200).send({message:" Password reset was succesfull now you can login with new password."});
 
 });
