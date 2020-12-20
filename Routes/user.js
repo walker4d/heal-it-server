@@ -19,6 +19,9 @@ router.put('/user/:id',userController.updateUser);
 router.post('/login',AuthController.login);
 //register
 router.post('/register',AuthController.register);
+
+router.post('/mobile/register',AuthController.mobile_register);
+
 // account activation 
 router.post('/activation',AuthController.activate_account);
 //reset password

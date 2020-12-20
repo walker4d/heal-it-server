@@ -6,7 +6,7 @@ const {Account_activation_email} = require('../helpers/email_service');
 const {registerValidate, loginValidate,emailVallidation,passwordValidate} = require('../helpers/validation.js');
 //validation service
 const bcrypt = require('bcryptjs');
-//post controller
+
 const register = async (req,res) => {
 
  
@@ -65,6 +65,66 @@ try{
 
 
 }
+
+const mobile_register = async (req,res) => {
+
+ 
+
+    // const {error} = registerValidate(req.body);
+    // if(error) {console.log(error.details[0].message) 
+    //     return res.status(400).send(error.details[0].message)}  ;
+    
+    
+    const u = await User.findOne({email:req.body.email});
+    if(u) return res.status(400).send('email already exists!');
+    //hashpassword
+    const salt =await bcrypt.genSalt(10);
+    
+    const hashpassword = await bcrypt.hash(req.body.password,salt);
+    
+    const user = {
+    
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
+        password: hashpassword,
+        email: req.body.email,
+        gender:req.body.gender,
+        age:0
+        
+    
+    }
+    const token  = JWT.sign({user:user},process.env.TOKEN_ACCOUNT_ACTIVATION,{
+        expiresIn:'15m'
+    });
+    
+    const emailData = {
+        from:process.env.email,
+        to:user.email,
+        subject:'Account Acctivation link',
+        html:
+        `<h1>Please click the link to acctivate</h1>
+        <p>${process.env.client}activation/${token}</p>
+        <hr/>
+        <p>this email is an activation for your account at</P>
+        <h1>Healit services ${process.env.client}<h1/>
+        `
+        
+    }
+    
+    try{
+        Account_activation_email(emailData);
+        res.status(200).send('email has been sent. please verify your account' );
+    }catch(err){
+    
+        console.log(err)
+        res.status(400).send('an error occured');
+    
+    }
+        
+     
+    
+    
+    }
 
 const activate_account = async (req,res) => {
 
@@ -333,5 +393,5 @@ const TwitterOAuth_Login = (req,res)=>{
 }
 
 module.exports = {
-    login,register,activate_account,forgetPassword,changePassword,GoogleOAuth_Login
+    login,register,activate_account,forgetPassword,changePassword,GoogleOAuth_Login,mobile_register
 }
